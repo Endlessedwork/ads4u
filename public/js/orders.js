@@ -7,14 +7,12 @@ export function register() {
 
 async function render(container) {
   container.innerHTML = `<p class="text-gray-400">${t('common.loading')}</p>`;
-
   let currentPage = 1;
   let currentStatus = '';
 
   async function loadOrders() {
     const params = new URLSearchParams({ page: currentPage, limit: 20 });
     if (currentStatus) params.set('status', currentStatus);
-
     try {
       const res = await api(`/api/orders?${params}`);
       renderOrders(container, res.orders, res.pagination);
@@ -29,14 +27,11 @@ async function render(container) {
 
   function renderOrders(container, orders, pagination) {
     container.innerHTML = '';
-
     const header = document.createElement('div');
     header.className = 'flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 gap-3';
-
     const title = document.createElement('h1');
     title.className = 'text-2xl font-bold text-gray-800';
     title.textContent = t('orders.title');
-
     const controls = document.createElement('div');
     controls.className = 'flex gap-3 items-center';
 
@@ -50,11 +45,7 @@ async function render(container) {
       opt.selected = s === currentStatus;
       statusSelect.appendChild(opt);
     }
-    statusSelect.onchange = () => {
-      currentStatus = statusSelect.value;
-      currentPage = 1;
-      loadOrders();
-    };
+    statusSelect.onchange = () => { currentStatus = statusSelect.value; currentPage = 1; loadOrders(); };
 
     const newOrderBtn = document.createElement('a');
     newOrderBtn.href = '#/services';
@@ -77,10 +68,8 @@ async function render(container) {
 
     const tableWrap = document.createElement('div');
     tableWrap.className = 'overflow-x-auto';
-
     const table = document.createElement('table');
     table.className = 'w-full bg-white rounded-xl shadow-sm border text-sm';
-
     const thead = document.createElement('thead');
     thead.innerHTML = `<tr class="border-b bg-gray-50">
       <th class="px-4 py-3 text-left text-gray-500">${t('orders.id')}</th>
@@ -95,17 +84,17 @@ async function render(container) {
     table.appendChild(thead);
 
     const tbody = document.createElement('tbody');
+    const statusColors = {
+      Pending: 'bg-yellow-100 text-yellow-800',
+      'In progress': 'bg-blue-100 text-blue-800',
+      Completed: 'bg-green-100 text-green-800',
+      Cancelled: 'bg-red-100 text-red-800',
+      Partial: 'bg-orange-100 text-orange-800',
+    };
+
     for (const order of orders) {
       const tr = document.createElement('tr');
       tr.className = 'border-b hover:bg-gray-50';
-
-      const statusColors = {
-        Pending: 'bg-yellow-100 text-yellow-800',
-        'In progress': 'bg-blue-100 text-blue-800',
-        Completed: 'bg-green-100 text-green-800',
-        Cancelled: 'bg-red-100 text-red-800',
-        Partial: 'bg-orange-100 text-orange-800',
-      };
 
       addCell(tr, order.ads4u_order_id || order.id);
 
@@ -149,9 +138,7 @@ async function render(container) {
           const res = await api(`/api/orders/${order.id}/status`);
           badge.textContent = res.status;
           badge.className = `px-2 py-1 rounded-full text-xs font-medium ${statusColors[res.status] || 'bg-gray-100 text-gray-800'}`;
-        } catch (err) {
-          alert(err.message);
-        }
+        } catch (err) { alert(err.message); }
       });
       actionDiv.appendChild(checkBtn);
 
@@ -160,9 +147,7 @@ async function render(container) {
           try {
             const res = await api(`/api/orders/${order.id}/refill`, { method: 'POST' });
             alert(`Refill ID: ${res.refill}`);
-          } catch (err) {
-            alert(err.message);
-          }
+          } catch (err) { alert(err.message); }
         });
         actionDiv.appendChild(refillBtn);
       }
@@ -173,9 +158,7 @@ async function render(container) {
           try {
             await api(`/api/orders/${order.id}/cancel`, { method: 'POST' });
             loadOrders();
-          } catch (err) {
-            alert(err.message);
-          }
+          } catch (err) { alert(err.message); }
         });
         actionDiv.appendChild(cancelBtn);
       }
@@ -184,7 +167,6 @@ async function render(container) {
       tr.appendChild(actionTd);
       tbody.appendChild(tr);
     }
-
     table.appendChild(tbody);
     tableWrap.appendChild(table);
     container.appendChild(tableWrap);
@@ -192,7 +174,6 @@ async function render(container) {
     if (pagination.pages > 1) {
       const paginationDiv = document.createElement('div');
       paginationDiv.className = 'flex justify-center gap-2 mt-4';
-
       if (currentPage > 1) {
         const prevBtn = document.createElement('button');
         prevBtn.className = 'px-4 py-2 border rounded-lg text-sm hover:bg-gray-50';
@@ -200,12 +181,10 @@ async function render(container) {
         prevBtn.onclick = () => { currentPage--; loadOrders(); };
         paginationDiv.appendChild(prevBtn);
       }
-
       const pageInfo = document.createElement('span');
       pageInfo.className = 'px-4 py-2 text-sm text-gray-500';
       pageInfo.textContent = `${currentPage} / ${pagination.pages}`;
       paginationDiv.appendChild(pageInfo);
-
       if (currentPage < pagination.pages) {
         const nextBtn = document.createElement('button');
         nextBtn.className = 'px-4 py-2 border rounded-lg text-sm hover:bg-gray-50';
@@ -213,7 +192,6 @@ async function render(container) {
         nextBtn.onclick = () => { currentPage++; loadOrders(); };
         paginationDiv.appendChild(nextBtn);
       }
-
       container.appendChild(paginationDiv);
     }
   }

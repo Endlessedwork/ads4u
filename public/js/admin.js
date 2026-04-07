@@ -39,7 +39,6 @@ async function render(container) {
 
   const table = document.createElement('table');
   table.className = 'w-full bg-white rounded-xl shadow-sm border text-sm';
-
   const thead = document.createElement('thead');
   thead.innerHTML = `<tr class="border-b bg-gray-50">
     <th class="px-4 py-3 text-left text-gray-500"></th>
@@ -52,7 +51,6 @@ async function render(container) {
   table.appendChild(thead);
 
   const tbody = document.createElement('tbody');
-
   for (const u of users) {
     const tr = document.createElement('tr');
     tr.className = 'border-b hover:bg-gray-50';
@@ -95,7 +93,6 @@ async function render(container) {
 
     const actionTd = document.createElement('td');
     actionTd.className = 'px-4 py-3';
-
     if (u.id !== user.id) {
       const newRole = u.role === 'admin' ? 'member' : 'admin';
       const btn = document.createElement('button');
@@ -105,22 +102,15 @@ async function render(container) {
         const msg = t('admin.confirm_role').replace('{role}', newRole);
         if (!confirm(msg)) return;
         try {
-          await api(`/api/admin/users/${u.id}/role`, {
-            method: 'PUT',
-            body: JSON.stringify({ role: newRole }),
-          });
+          await api(`/api/admin/users/${u.id}/role`, { method: 'PUT', body: JSON.stringify({ role: newRole }) });
           render(container);
-        } catch (err) {
-          alert(err.message);
-        }
+        } catch (err) { alert(err.message); }
       };
       actionTd.appendChild(btn);
     }
-
     tr.appendChild(actionTd);
     tbody.appendChild(tr);
   }
-
   table.appendChild(tbody);
   container.appendChild(table);
 }

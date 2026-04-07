@@ -9,7 +9,6 @@ export function register() {
 
 async function render(container) {
   container.innerHTML = `<p class="text-gray-400">${t('common.loading')}</p>`;
-
   try {
     allServices = await api('/api/services');
   } catch (err) {
@@ -37,7 +36,6 @@ async function render(container) {
 
   const table = document.createElement('table');
   table.className = 'w-full bg-white rounded-xl shadow-sm border text-sm';
-
   const thead = document.createElement('thead');
   thead.innerHTML = `<tr class="border-b bg-gray-50">
     <th class="px-4 py-3 text-left text-gray-500">${t('services.id')}</th>
@@ -48,11 +46,9 @@ async function render(container) {
     <th class="px-4 py-3 text-left text-gray-500"></th>
   </tr>`;
   table.appendChild(thead);
-
   const tableBody = document.createElement('tbody');
   table.appendChild(tableBody);
   container.appendChild(table);
-
   renderTable(tableBody, '');
 
   const modal = document.createElement('div');
@@ -81,7 +77,6 @@ async function render(container) {
     </div>
   `;
   container.appendChild(modal);
-
   document.getElementById('orderCancel').onclick = () => modal.classList.add('hidden');
   document.getElementById('orderForm').onsubmit = handleOrderSubmit;
 }
@@ -92,7 +87,6 @@ function renderTable(tbody, query) {
   const filtered = allServices.filter(s =>
     !q || s.name?.toLowerCase().includes(q) || s.category?.toLowerCase().includes(q) || String(s.service).includes(q)
   );
-
   if (filtered.length === 0) {
     const tr = document.createElement('tr');
     const td = document.createElement('td');
@@ -103,26 +97,16 @@ function renderTable(tbody, query) {
     tbody.appendChild(tr);
     return;
   }
-
   for (const svc of filtered) {
     const tr = document.createElement('tr');
     tr.className = 'border-b hover:bg-gray-50';
-
-    const cells = [
-      svc.service,
-      svc.name,
-      svc.category || '-',
-      `$${svc.rate}`,
-      `${svc.min} / ${svc.max}`,
-    ];
-
+    const cells = [svc.service, svc.name, svc.category || '-', `$${svc.rate}`, `${svc.min} / ${svc.max}`];
     for (const cellText of cells) {
       const td = document.createElement('td');
       td.className = 'px-4 py-3 text-gray-700';
       td.textContent = cellText;
       tr.appendChild(td);
     }
-
     const actionTd = document.createElement('td');
     actionTd.className = 'px-4 py-3';
     const orderBtn = document.createElement('button');
@@ -131,7 +115,6 @@ function renderTable(tbody, query) {
     orderBtn.onclick = () => openOrderModal(svc);
     actionTd.appendChild(orderBtn);
     tr.appendChild(actionTd);
-
     tbody.appendChild(tr);
   }
 }
@@ -151,23 +134,18 @@ function openOrderModal(service) {
 async function handleOrderSubmit(e) {
   e.preventDefault();
   const msgEl = document.getElementById('orderMessage');
-
   const body = {
     serviceId: document.getElementById('orderServiceId').value,
     serviceName: document.getElementById('orderServiceName').value,
     link: document.getElementById('orderLink').value,
     quantity: document.getElementById('orderQuantity').value,
   };
-
   try {
     await api('/api/orders', { method: 'POST', body: JSON.stringify(body) });
     msgEl.textContent = t('order_form.success');
     msgEl.className = 'text-sm text-green-600';
     msgEl.classList.remove('hidden');
-    setTimeout(() => {
-      document.getElementById('orderModal').classList.add('hidden');
-      location.hash = '#/orders';
-    }, 1000);
+    setTimeout(() => { document.getElementById('orderModal').classList.add('hidden'); location.hash = '#/orders'; }, 1000);
   } catch (err) {
     msgEl.textContent = err.message;
     msgEl.className = 'text-sm text-red-600';

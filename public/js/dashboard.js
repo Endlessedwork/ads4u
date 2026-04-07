@@ -45,30 +45,22 @@ async function render(container) {
   ];
 
   if (balance) {
-    cards.unshift({
-      label: t('dashboard.balance'),
-      value: `${balance.balance} ${balance.currency || ''}`,
-      color: 'primary',
-    });
+    cards.unshift({ label: t('dashboard.balance'), value: `${balance.balance} ${balance.currency || ''}`, color: 'primary' });
   }
 
   for (const card of cards) {
     const div = document.createElement('div');
     div.className = 'bg-white rounded-xl shadow-sm border p-5';
-
     const label = document.createElement('p');
     label.className = 'text-sm text-gray-500';
     label.textContent = card.label;
-
     const value = document.createElement('p');
     value.className = 'text-2xl font-bold text-gray-800 mt-1';
     value.textContent = card.value;
-
     div.appendChild(label);
     div.appendChild(value);
     statsRow.appendChild(div);
   }
-
   container.appendChild(statsRow);
 
   const recentTitle = document.createElement('h2');
@@ -86,7 +78,6 @@ async function render(container) {
 
   const table = document.createElement('table');
   table.className = 'w-full bg-white rounded-xl shadow-sm border text-sm';
-
   const thead = document.createElement('thead');
   thead.innerHTML = `<tr class="border-b bg-gray-50">
     <th class="px-4 py-3 text-left text-gray-500">${t('orders.id')}</th>
@@ -101,25 +92,15 @@ async function render(container) {
   for (const order of orders) {
     const tr = document.createElement('tr');
     tr.className = 'border-b hover:bg-gray-50';
-
-    const cells = [
-      order.ads4u_order_id || order.id,
-      order.service_name,
-      order.link,
-      order.status,
-      new Date(order.created_at).toLocaleDateString(),
-    ];
-
+    const cells = [order.ads4u_order_id || order.id, order.service_name, order.link, order.status, new Date(order.created_at).toLocaleDateString()];
     for (const cellText of cells) {
       const td = document.createElement('td');
       td.className = 'px-4 py-3 text-gray-700 truncate max-w-[200px]';
       td.textContent = cellText;
       tr.appendChild(td);
     }
-
     tbody.appendChild(tr);
   }
-
   table.appendChild(tbody);
   container.appendChild(table);
 }
