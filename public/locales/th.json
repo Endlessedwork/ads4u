@@ -1,0 +1,79 @@
+{
+  "login": {
+    "subtitle": "เข้าสู่ระบบเพื่อดำเนินการต่อ",
+    "google_button": "เข้าสู่ระบบด้วย Google"
+  },
+  "nav": {
+    "dashboard": "แดชบอร์ด",
+    "services": "บริการ",
+    "orders": "คำสั่งซื้อ",
+    "admin_users": "จัดการผู้ใช้",
+    "logout": "ออกจากระบบ"
+  },
+  "dashboard": {
+    "title": "แดชบอร์ด",
+    "balance": "ยอดเงินคงเหลือ",
+    "total_orders": "คำสั่งซื้อทั้งหมด",
+    "recent_orders": "คำสั่งซื้อล่าสุด",
+    "pending": "รอดำเนินการ",
+    "in_progress": "กำลังดำเนินการ",
+    "completed": "เสร็จสิ้น"
+  },
+  "services": {
+    "title": "บริการทั้งหมด",
+    "search": "ค้นหาบริการ...",
+    "id": "รหัส",
+    "name": "ชื่อบริการ",
+    "rate": "ราคา",
+    "min": "ขั้นต่ำ",
+    "max": "สูงสุด",
+    "category": "หมวดหมู่",
+    "order": "สั่งซื้อ"
+  },
+  "orders": {
+    "title": "คำสั่งซื้อ",
+    "new_order": "สั่งซื้อใหม่",
+    "id": "รหัส",
+    "service": "บริการ",
+    "link": "ลิงก์",
+    "quantity": "จำนวน",
+    "status": "สถานะ",
+    "charge": "ค่าใช้จ่าย",
+    "date": "วันที่",
+    "actions": "จัดการ",
+    "check_status": "เช็คสถานะ",
+    "refill": "เติมซ้ำ",
+    "cancel": "ยกเลิก",
+    "all": "ทั้งหมด",
+    "filter_status": "กรองตามสถานะ"
+  },
+  "order_form": {
+    "title": "สั่งซื้อใหม่",
+    "service": "เลือกบริการ",
+    "link": "ลิงก์ URL",
+    "link_placeholder": "https://instagram.com/username",
+    "quantity": "จำนวน",
+    "submit": "ยืนยันสั่งซื้อ",
+    "success": "สั่งซื้อสำเร็จ!",
+    "error": "เกิดข้อผิดพลาด"
+  },
+  "admin": {
+    "title": "จัดการผู้ใช้",
+    "name": "ชื่อ",
+    "email": "อีเมล",
+    "role": "บทบาท",
+    "joined": "วันที่เข้าร่วม",
+    "change_role": "เปลี่ยนบทบาท",
+    "confirm_role": "ยืนยันเปลี่ยนบทบาทเป็น {role}?"
+  },
+  "common": {
+    "loading": "กำลังโหลด...",
+    "error": "เกิดข้อผิดพลาด",
+    "confirm": "ยืนยัน",
+    "cancel": "ยกเลิก",
+    "save": "บันทึก",
+    "no_data": "ไม่มีข้อมูล",
+    "prev": "ก่อนหน้า",
+    "next": "ถัดไป"
+  }
+}

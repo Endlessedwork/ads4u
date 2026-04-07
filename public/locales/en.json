@@ -1,0 +1,79 @@
+{
+  "login": {
+    "subtitle": "Sign in to continue",
+    "google_button": "Sign in with Google"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "services": "Services",
+    "orders": "Orders",
+    "admin_users": "Manage Users",
+    "logout": "Logout"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "balance": "Balance",
+    "total_orders": "Total Orders",
+    "recent_orders": "Recent Orders",
+    "pending": "Pending",
+    "in_progress": "In Progress",
+    "completed": "Completed"
+  },
+  "services": {
+    "title": "All Services",
+    "search": "Search services...",
+    "id": "ID",
+    "name": "Service Name",
+    "rate": "Rate",
+    "min": "Min",
+    "max": "Max",
+    "category": "Category",
+    "order": "Order"
+  },
+  "orders": {
+    "title": "Orders",
+    "new_order": "New Order",
+    "id": "ID",
+    "service": "Service",
+    "link": "Link",
+    "quantity": "Quantity",
+    "status": "Status",
+    "charge": "Charge",
+    "date": "Date",
+    "actions": "Actions",
+    "check_status": "Check Status",
+    "refill": "Refill",
+    "cancel": "Cancel",
+    "all": "All",
+    "filter_status": "Filter by status"
+  },
+  "order_form": {
+    "title": "New Order",
+    "service": "Select Service",
+    "link": "Link URL",
+    "link_placeholder": "https://instagram.com/username",
+    "quantity": "Quantity",
+    "submit": "Place Order",
+    "success": "Order placed successfully!",
+    "error": "An error occurred"
+  },
+  "admin": {
+    "title": "Manage Users",
+    "name": "Name",
+    "email": "Email",
+    "role": "Role",
+    "joined": "Joined",
+    "change_role": "Change Role",
+    "confirm_role": "Confirm changing role to {role}?"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "confirm": "Confirm",
+    "cancel": "Cancel",
+    "save": "Save",
+    "no_data": "No data",
+    "prev": "Previous",
+    "next": "Next"
+  }
+}
