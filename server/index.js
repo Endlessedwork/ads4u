@@ -15,18 +15,23 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+// Auth must be set up before API routes
 setupAuth(app);
 
+// Rate limit on API routes
 app.use('/api', apiLimiter);
 
+// API routes
 app.use(servicesRouter);
 app.use(ordersRouter);
 app.use(balanceRouter);
 app.use(adminRouter);
 
+// Serve static frontend
 app.use(express.static(path.join(__dirname, '..', 'public')));
 
-app.get('*', (req, res) => {
+// SPA fallback
+app.get('{*path}', (req, res) => {
   if (req.path.startsWith('/api/') || req.path.startsWith('/auth/')) {
     return res.status(404).json({ error: 'Not found' });
   }
