@@ -35,46 +35,48 @@ export function setupAuth(app) {
   const callbackURL = process.env.GOOGLE_CALLBACK_URL
     || `http://localhost:${process.env.PORT || 3000}/auth/google/callback`;
 
-  passport.use(new GoogleStrategy({
-    clientID: process.env.GOOGLE_CLIENT_ID,
-    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL,
-  }, (accessToken, refreshToken, profile, done) => {
-    const googleId = profile.id;
-    const email = profile.emails?.[0]?.value || '';
-    const name = profile.displayName || '';
-    const avatarUrl = profile.photos?.[0]?.value || '';
+  if (process.env.GOOGLE_CLIENT_ID) {
+    passport.use(new GoogleStrategy({
+      clientID: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      callbackURL,
+    }, (accessToken, refreshToken, profile, done) => {
+      const googleId = profile.id;
+      const email = profile.emails?.[0]?.value || '';
+      const name = profile.displayName || '';
+      const avatarUrl = profile.photos?.[0]?.value || '';
 
-    let user = db.prepare('SELECT * FROM users WHERE google_id = ?').get(googleId);
+      let user = db.prepare('SELECT * FROM users WHERE google_id = ?').get(googleId);
 
-    if (user) {
-      db.prepare(`
-        UPDATE users SET name = ?, avatar_url = ?, updated_at = CURRENT_TIMESTAMP
-        WHERE id = ?
-      `).run(name, avatarUrl, user.id);
-      user = db.prepare('SELECT * FROM users WHERE id = ?').get(user.id);
-    } else {
-      const userCount = db.prepare('SELECT COUNT(*) as count FROM users').get().count;
-      const role = userCount === 0 ? 'admin' : 'member';
+      if (user) {
+        db.prepare(`
+          UPDATE users SET name = ?, avatar_url = ?, updated_at = CURRENT_TIMESTAMP
+          WHERE id = ?
+        `).run(name, avatarUrl, user.id);
+        user = db.prepare('SELECT * FROM users WHERE id = ?').get(user.id);
+      } else {
+        const userCount = db.prepare('SELECT COUNT(*) as count FROM users').get().count;
+        const role = userCount === 0 ? 'admin' : 'member';
 
-      const result = db.prepare(`
-        INSERT INTO users (google_id, email, name, avatar_url, role)
-        VALUES (?, ?, ?, ?, ?)
-      `).run(googleId, email, name, avatarUrl, role);
-      user = db.prepare('SELECT * FROM users WHERE id = ?').get(result.lastInsertRowid);
-    }
+        const result = db.prepare(`
+          INSERT INTO users (google_id, email, name, avatar_url, role)
+          VALUES (?, ?, ?, ?, ?)
+        `).run(googleId, email, name, avatarUrl, role);
+        user = db.prepare('SELECT * FROM users WHERE id = ?').get(result.lastInsertRowid);
+      }
 
-    done(null, user);
-  }));
+      done(null, user);
+    }));
 
-  app.get('/auth/google', passport.authenticate('google', {
-    scope: ['profile', 'email'],
-  }));
+    app.get('/auth/google', passport.authenticate('google', {
+      scope: ['profile', 'email'],
+    }));
 
-  app.get('/auth/google/callback',
-    passport.authenticate('google', { failureRedirect: '/#/login' }),
-    (req, res) => res.redirect('/')
-  );
+    app.get('/auth/google/callback',
+      passport.authenticate('google', { failureRedirect: '/#/login' }),
+      (req, res) => res.redirect('/')
+    );
+  }
 
   app.post('/auth/logout', (req, res) => {
     req.logout(() => {
@@ -89,4 +91,5 @@ export function setupAuth(app) {
     const { google_id, ...safeUser } = req.user;
     res.json(safeUser);
   });
+
 }
