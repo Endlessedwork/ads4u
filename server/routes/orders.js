@@ -50,6 +50,9 @@ router.post('/api/orders', requireAuth, async (req, res) => {
     if (err.code === 'ADS4U_API_ERROR') {
       return res.status(502).json({ error: err.message });
     }
+    if (err.code === 'ADS4U_CONFIG_ERROR') {
+      return res.status(503).json({ error: err.message });
+    }
     res.status(500).json({ error: 'Failed to place order' });
   }
 });
@@ -131,6 +134,9 @@ router.get('/api/orders/:id/status', requireAuth, async (req, res) => {
     if (err.code === 'ADS4U_API_ERROR') {
       return res.status(502).json({ error: err.message });
     }
+    if (err.code === 'ADS4U_CONFIG_ERROR') {
+      return res.status(503).json({ error: err.message });
+    }
     res.status(500).json({ error: 'Failed to check status' });
   }
 });
@@ -155,6 +161,9 @@ router.post('/api/orders/:id/refill', requireAuth, async (req, res) => {
     if (err.code === 'ADS4U_API_ERROR') {
       return res.status(502).json({ error: err.message });
     }
+    if (err.code === 'ADS4U_CONFIG_ERROR') {
+      return res.status(503).json({ error: err.message });
+    }
     res.status(500).json({ error: 'Failed to refill order' });
   }
 });
@@ -173,6 +182,9 @@ router.get('/api/orders/:id/refill-status', requireAuth, async (req, res) => {
     console.error('Failed to check refill status:', err.message);
     if (err.code === 'ADS4U_API_ERROR') {
       return res.status(502).json({ error: err.message });
+    }
+    if (err.code === 'ADS4U_CONFIG_ERROR') {
+      return res.status(503).json({ error: err.message });
     }
     res.status(500).json({ error: 'Failed to check refill status' });
   }
@@ -202,6 +214,9 @@ router.post('/api/orders/:id/cancel', requireAuth, async (req, res) => {
     console.error('Failed to cancel order:', err.message);
     if (err.code === 'ADS4U_API_ERROR') {
       return res.status(502).json({ error: err.message });
+    }
+    if (err.code === 'ADS4U_CONFIG_ERROR') {
+      return res.status(503).json({ error: err.message });
     }
     res.status(500).json({ error: 'Failed to cancel order' });
   }

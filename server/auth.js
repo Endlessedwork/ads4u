@@ -72,9 +72,14 @@ export function setupAuth(app) {
       scope: ['profile', 'email'],
     }));
 
+    // Derive base URL from callback URL for correct redirect behind reverse proxy
+    const baseUrl = process.env.GOOGLE_CALLBACK_URL
+      ? process.env.GOOGLE_CALLBACK_URL.replace(/\/auth\/google\/callback$/, '/')
+      : '/';
+
     app.get('/auth/google/callback',
-      passport.authenticate('google', { failureRedirect: '/#/login' }),
-      (req, res) => res.redirect('/')
+      passport.authenticate('google', { failureRedirect: baseUrl + '#/login' }),
+      (req, res) => res.redirect(baseUrl)
     );
   }
 

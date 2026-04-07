@@ -13,6 +13,9 @@ router.get('/api/services', requireAuth, async (req, res) => {
     if (err.code === 'ADS4U_API_ERROR') {
       return res.status(502).json({ error: err.message });
     }
+    if (err.code === 'ADS4U_CONFIG_ERROR') {
+      return res.status(503).json({ error: err.message });
+    }
     res.status(500).json({ error: 'Failed to fetch services' });
   }
 });

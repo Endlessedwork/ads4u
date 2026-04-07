@@ -5,7 +5,9 @@ const API_URL = 'https://ads4u.co/api/v2';
 async function callApi(action, params = {}) {
   const apiKey = process.env.ADS4U_API_KEY;
   if (!apiKey) {
-    throw new Error('ADS4U_API_KEY is not configured');
+    const err = new Error('ADS4U_API_KEY is not configured');
+    err.code = 'ADS4U_CONFIG_ERROR';
+    throw err;
   }
 
   const body = new URLSearchParams({
