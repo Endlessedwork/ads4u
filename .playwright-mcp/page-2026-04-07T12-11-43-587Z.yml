@@ -1,0 +1,80 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - generic [ref=e4]:
+      - img [ref=e6]
+      - heading "ยินดีต้อนรับ" [level=2] [ref=e8]
+      - paragraph [ref=e9]: เข้าสู่ระบบเพื่อดำเนินการต่อ
+    - link "เข้าสู่ระบบด้วย Google" [ref=e10] [cursor=pointer]:
+      - /url: /auth/google
+      - img [ref=e11]
+      - generic [ref=e16]: เข้าสู่ระบบด้วย Google
+    - button "หรือใช้รหัสผ่าน" [ref=e19] [cursor=pointer]
+  - complementary [ref=e21]:
+    - generic [ref=e22]:
+      - generic [ref=e23]:
+        - img [ref=e25]
+        - heading "GitCoder" [level=1] [ref=e28]
+      - button [ref=e30] [cursor=pointer]:
+        - img [ref=e31]
+    - button "แชทใหม่" [ref=e34] [cursor=pointer]:
+      - img [ref=e35]
+      - generic [ref=e37]: แชทใหม่
+    - heading "แชท" [level=3] [ref=e40]
+    - paragraph [ref=e43]: ยังไม่มีแชท
+    - generic [ref=e45]:
+      - generic [ref=e48]: Loading...
+      - generic [ref=e49] [cursor=pointer]: vmulti-project
+  - main [ref=e50]:
+    - generic [ref=e51]:
+      - button [ref=e52] [cursor=pointer]:
+        - img [ref=e53]
+      - generic:
+        - img [ref=e56]
+        - generic:
+          - heading "เลือกโปรเจกต์เพื่อเริ่มต้น" [level=2]
+          - paragraph
+      - generic [ref=e58]:
+        - button "EN" [ref=e59] [cursor=pointer]
+        - button "ออกจากระบบ" [ref=e60] [cursor=pointer]:
+          - img [ref=e61]
+        - button "Preview" [ref=e63] [cursor=pointer]:
+          - img [ref=e64]
+          - generic [ref=e67]: Preview
+        - button [ref=e68] [cursor=pointer]:
+          - img [ref=e69]
+    - generic [ref=e73]:
+      - img [ref=e75]
+      - heading "เริ่มสนทนา" [level=3] [ref=e77]
+      - paragraph [ref=e78]: เลือกแชทที่มีอยู่หรือสร้างใหม่เพื่อเริ่มเขียนโค้ดกับ AI
+    - generic [ref=e82]:
+      - textbox "พิมพ์ข้อความ..." [ref=e83]
+      - generic [ref=e84]:
+        - generic [ref=e85]:
+          - generic [ref=e86]: Enter
+          - generic [ref=e87]: Enter เพื่อส่ง
+          - generic [ref=e88]: "|"
+          - generic [ref=e89]: Shift+Enter
+          - generic [ref=e90]: Shift+Enter ขึ้นบรรทัดใหม่
+        - button "ส่ง" [ref=e91] [cursor=pointer]:
+          - generic [ref=e92]: ส่ง
+          - img
+  - complementary [ref=e94]:
+    - generic [ref=e95]:
+      - generic [ref=e96]:
+        - img [ref=e98]
+        - heading "ไฟล์ที่เปลี่ยนแปลง" [level=3] [ref=e100]
+      - button [ref=e101] [cursor=pointer]:
+        - img [ref=e102]
+    - generic [ref=e104]:
+      - generic [ref=e106]: Git Controls
+      - generic [ref=e107]: ยังไม่ได้เลือกโปรเจกต์
+      - generic [ref=e108]:
+        - button "Pull" [ref=e109] [cursor=pointer]:
+          - img [ref=e110]
+          - text: Pull
+        - button "Push" [ref=e112] [cursor=pointer]:
+          - img [ref=e113]
+          - text: Push
+        - button "รีเฟรช" [ref=e115] [cursor=pointer]
+    - paragraph [ref=e117]: เลือกโปรเจกต์เพื่อดูไฟล์
+    - paragraph [ref=e120]: ยังไม่ได้เลือกโปรเจกต์

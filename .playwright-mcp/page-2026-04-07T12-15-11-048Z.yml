@@ -1,0 +1,37 @@
+- generic [ref=e3]:
+  - complementary [ref=e4]:
+    - generic [ref=e6]:
+      - img [ref=e8]
+      - generic [ref=e10]: Ads4U Panel
+    - navigation [ref=e11]:
+      - link "แดชบอร์ด" [ref=e12] [cursor=pointer]:
+        - /url: "#/dashboard"
+        - img [ref=e13]
+        - generic [ref=e15]: แดชบอร์ด
+      - link "บริการ" [ref=e16] [cursor=pointer]:
+        - /url: "#/services"
+        - img [ref=e17]
+        - generic [ref=e19]: บริการ
+      - link "คำสั่งซื้อ" [ref=e20] [cursor=pointer]:
+        - /url: "#/orders"
+        - img [ref=e21]
+        - generic [ref=e23]: คำสั่งซื้อ
+      - link "จัดการผู้ใช้" [ref=e24] [cursor=pointer]:
+        - /url: "#/admin"
+        - img [ref=e25]
+        - generic [ref=e27]: จัดการผู้ใช้
+      - button "English" [ref=e30] [cursor=pointer]:
+        - img [ref=e31]
+        - generic [ref=e33]: English
+      - button "ออกจากระบบ" [ref=e34] [cursor=pointer]:
+        - img [ref=e35]
+        - generic [ref=e37]: ออกจากระบบ
+    - generic [ref=e39]:
+      - img "Dev Admin" [ref=e40]
+      - generic [ref=e41]:
+        - generic [ref=e42]: Dev Admin
+        - generic [ref=e43]: admin
+  - main [ref=e44]:
+    - generic [ref=e90]:
+      - heading "บริการทั้งหมด" [level=1] [ref=e91]
+      - textbox "ค้นหาบริการ..." [ref=e92]

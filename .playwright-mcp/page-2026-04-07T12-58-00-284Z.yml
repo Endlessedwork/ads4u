@@ -1,0 +1,9 @@
+- generic [ref=e3]:
+  - img [ref=e5]
+  - heading "Ads4U Panel" [level=1] [ref=e7]
+  - paragraph [ref=e8]: เข้าสู่ระบบเพื่อดำเนินการต่อ
+  - link "เข้าสู่ระบบด้วย Google" [ref=e9] [cursor=pointer]:
+    - /url: /auth/google
+    - img [ref=e10]
+    - generic [ref=e15]: เข้าสู่ระบบด้วย Google
+  - button "TH / EN" [ref=e17] [cursor=pointer]
