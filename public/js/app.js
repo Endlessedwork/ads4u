@@ -13,8 +13,11 @@ const icons = {
 };
 
 // --- API helper ---
+// Use relative paths (no leading /) so requests go through reverse proxy correctly
 export async function api(path, options = {}) {
-  const res = await fetch(path, {
+  // Strip leading slash to make path relative
+  const relPath = path.startsWith('/') ? path.slice(1) : path;
+  const res = await fetch(relPath, {
     headers: { 'Content-Type': 'application/json', ...options.headers },
     ...options,
   });
@@ -117,7 +120,7 @@ function buildSidebar() {
   logoutSpan.textContent = t('nav.logout');
   logoutBtn.appendChild(logoutSpan);
   logoutBtn.onclick = async () => {
-    await fetch('/auth/logout', { method: 'POST' });
+    await fetch('auth/logout', { method: 'POST' });
     location.reload();
   };
   nav.appendChild(logoutBtn);

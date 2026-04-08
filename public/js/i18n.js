@@ -6,7 +6,8 @@ export async function initI18n() {
 }
 
 async function loadTranslations(lang) {
-  const res = await fetch(`/locales/${lang}.json`);
+  // Use relative path so it works behind reverse proxy (e.g. /preview/2/)
+  const res = await fetch(`locales/${lang}.json`);
   translations = await res.json();
   currentLang = lang;
   localStorage.setItem('lang', lang);
