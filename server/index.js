@@ -39,6 +39,12 @@ app.get('{*path}', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
 });
 
+// JSON error handler — prevent Express from sending HTML error pages
+app.use((err, req, res, _next) => {
+  console.error('Unhandled error:', err.message);
+  res.status(err.status || 500).json({ error: err.message || 'Internal server error' });
+});
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Ads4U Panel running on http://localhost:${PORT}`);

@@ -7,7 +7,7 @@ const router = Router();
 
 // Place new order
 router.post('/api/orders', requireAuth, async (req, res) => {
-  const { serviceId, serviceName, link, quantity } = req.body;
+  const { serviceId, serviceName, link, quantity } = req.body || {};
 
   if (!serviceId || !link || !quantity) {
     return res.status(400).json({ error: 'serviceId, link, and quantity are required' });
