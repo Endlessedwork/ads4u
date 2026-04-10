@@ -2,6 +2,7 @@ import { registerRoute, api } from './app.js';
 import { t } from './i18n.js';
 
 let allServices = [];
+let searchIndex = [];
 
 export function register() {
   registerRoute('/services', render);
@@ -35,6 +36,11 @@ async function render(container) {
 
   try {
     allServices = await api('/api/services');
+    searchIndex = allServices.map(s => ({
+      name: (s.name || '').toLowerCase(),
+      category: (s.category || '').toLowerCase(),
+      id: String(s.service),
+    }));
   } catch (err) {
     skeleton.remove();
     const errDiv = document.createElement('div');
@@ -82,7 +88,11 @@ async function render(container) {
   container.appendChild(tableWrap);
 
   renderTable(tableBody, '');
-  searchInput.oninput = () => renderTable(tableBody, searchInput.value);
+  let searchTimer;
+  searchInput.oninput = () => {
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(() => renderTable(tableBody, searchInput.value), 150);
+  };
 
   // Order modal
   const modal = document.createElement('div');
@@ -131,9 +141,11 @@ async function render(container) {
 function renderTable(tbody, query) {
   tbody.innerHTML = '';
   const q = query.toLowerCase();
-  const filtered = allServices.filter(s =>
-    !q || s.name?.toLowerCase().includes(q) || s.category?.toLowerCase().includes(q) || String(s.service).includes(q)
-  );
+  const filtered = allServices.filter((s, i) => {
+    if (!q) return true;
+    const idx = searchIndex[i];
+    return idx.name.includes(q) || idx.category.includes(q) || idx.id.includes(q);
+  });
 
   const countEl = document.getElementById('serviceCount');
   if (countEl) {
@@ -154,6 +166,7 @@ function renderTable(tbody, query) {
     return;
   }
 
+  const frag = document.createDocumentFragment();
   for (const svc of filtered) {
     const tr = document.createElement('tr');
     tr.className = 'hover:bg-slate-50/50 transition-colors duration-150';
@@ -196,8 +209,9 @@ function renderTable(tbody, query) {
     actionTd.appendChild(orderBtn);
     tr.appendChild(actionTd);
 
-    tbody.appendChild(tr);
+    frag.appendChild(tr);
   }
+  tbody.appendChild(frag);
 }
 
 function isCommentService(service) {
