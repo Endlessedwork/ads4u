@@ -222,4 +222,56 @@ router.post('/api/orders/:id/cancel', requireAuth, async (req, res) => {
   }
 });
 
+// Batch sync active orders' status from ads4u
+router.post('/api/orders/sync', requireAuth, async (req, res) => {
+  // Find orders in active states that belong to this user (or all if admin)
+  let whereClause = "WHERE o.status IN ('Pending', 'In progress', 'Processing')";
+  const params = [];
+
+  if (req.user.role !== 'admin') {
+    whereClause += ' AND o.user_id = ?';
+    params.push(req.user.id);
+  }
+
+  const activeOrders = db.prepare(
+    `SELECT o.id, o.ads4u_order_id, o.status FROM orders o ${whereClause}`
+  ).all(...params);
+
+  if (activeOrders.length === 0) {
+    return res.json({ updated: 0, orders: [] });
+  }
+
+  const updateStmt = db.prepare(`
+    UPDATE orders SET status = ?, charge = ?, remains = ?, updated_at = CURRENT_TIMESTAMP
+    WHERE id = ?
+  `);
+
+  const updated = [];
+  // Process in parallel with concurrency limit
+  const results = await Promise.allSettled(
+    activeOrders.map(async (order) => {
+      try {
+        const result = await getOrderStatus(order.ads4u_order_id);
+        if (result.status !== order.status) {
+          updateStmt.run(result.status, result.charge, result.remains, order.id);
+          updated.push({
+            id: order.id,
+            ads4u_order_id: order.ads4u_order_id,
+            old_status: order.status,
+            status: result.status,
+            charge: result.charge,
+            remains: result.remains,
+          });
+        }
+        return result;
+      } catch {
+        // Skip individual failures silently
+        return null;
+      }
+    })
+  );
+
+  res.json({ updated: updated.length, orders: updated });
+});
+
 export default router;

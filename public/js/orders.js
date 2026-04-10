@@ -1,6 +1,8 @@
 import { registerRoute, api } from './app.js';
 import { t } from './i18n.js';
 
+let pollInterval = null;
+
 export function register() {
   registerRoute('/orders', render);
 }
@@ -14,6 +16,12 @@ const statusColors = {
 };
 
 async function render(container) {
+  // Clear any previous poll interval
+  if (pollInterval) {
+    clearInterval(pollInterval);
+    pollInterval = null;
+  }
+
   container.innerHTML = '';
   let currentPage = 1;
   let currentStatus = '';
@@ -86,6 +94,30 @@ async function render(container) {
   }
 
   await loadOrders();
+
+  // Start auto-polling for status updates every 15 seconds
+  pollInterval = setInterval(async () => {
+    // Only poll if we're still on the orders page
+    if (!location.hash.startsWith('#/orders')) {
+      clearInterval(pollInterval);
+      pollInterval = null;
+      return;
+    }
+    try {
+      await api('api/orders/sync', { method: 'POST' });
+      // Reload the list to reflect updated statuses
+      const params = new URLSearchParams({ page: currentPage, limit: 20 });
+      if (currentStatus) params.set('status', currentStatus);
+      const res = await api(`api/orders?${params}`);
+      // Update table body in-place if it exists
+      const tbody = container.querySelector('tbody');
+      if (tbody) {
+        updateOrderRows(tbody, res.orders);
+      }
+    } catch {
+      // Silently ignore poll errors
+    }
+  }, 15000);
 }
 
 function renderOrders(container, orders, pagination, reload) {
@@ -129,6 +161,7 @@ function renderOrders(container, orders, pagination, reload) {
   for (const order of orders) {
     const tr = document.createElement('tr');
     tr.className = 'hover:bg-slate-50/50 transition-colors duration-150';
+    tr.dataset.orderId = String(order.id);
 
     const idTd = document.createElement('td');
     idTd.className = 'px-4 py-3 text-slate-600 tabular-nums font-mono text-xs';
@@ -263,6 +296,33 @@ function renderOrders(container, orders, pagination, reload) {
     }
 
     container.appendChild(paginationDiv);
+  }
+}
+
+function updateOrderRows(tbody, orders) {
+  for (const order of orders) {
+    const tr = tbody.querySelector(`tr[data-order-id="${order.id}"]`);
+    if (!tr) continue;
+
+    // Update status badge (5th cell, index 4)
+    const statusTd = tr.children[4];
+    if (statusTd) {
+      const badge = statusTd.querySelector('span');
+      if (badge && badge.textContent !== order.status) {
+        badge.textContent = order.status;
+        badge.className = `inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium ${statusColors[order.status] || 'bg-slate-100 text-slate-700'}`;
+        // Flash animation for changed status
+        tr.style.transition = 'background-color 0.5s';
+        tr.style.backgroundColor = '#eff6ff';
+        setTimeout(() => { tr.style.backgroundColor = ''; }, 1500);
+      }
+    }
+
+    // Update charge (6th cell, index 5)
+    const chargeTd = tr.children[5];
+    if (chargeTd) {
+      chargeTd.textContent = order.charge != null ? `$${order.charge}` : '-';
+    }
   }
 }
 
