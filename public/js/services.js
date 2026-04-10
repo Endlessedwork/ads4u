@@ -108,6 +108,11 @@ async function render(container) {
           <input type="number" id="orderQuantity" required min="1" class="w-full px-3.5 py-2.5 bg-white border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-shadow duration-200 tabular-nums" />
           <p class="text-xs text-slate-400 mt-1" id="orderQuantityHint"></p>
         </div>
+        <div id="orderCommentsGroup" class="hidden">
+          <label for="orderComments" class="block text-sm font-medium text-slate-700 mb-1.5">${t('order_form.comments')}</label>
+          <textarea id="orderComments" rows="4" class="w-full px-3.5 py-2.5 bg-white border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-shadow duration-200 resize-y" placeholder="${t('order_form.comments_placeholder')}"></textarea>
+          <p class="text-xs text-slate-400 mt-1">${t('order_form.comments_hint')}</p>
+        </div>
         <div id="orderMessage" class="text-sm hidden rounded-lg px-3 py-2"></div>
         <div class="flex gap-3 pt-1">
           <button type="submit" class="flex-1 bg-primary-600 text-white py-2.5 rounded-lg font-medium text-sm hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-colors duration-200 cursor-pointer">${t('order_form.submit')}</button>
@@ -195,6 +200,11 @@ function renderTable(tbody, query) {
   }
 }
 
+function isCommentService(service) {
+  const text = `${service.name || ''} ${service.category || ''}`.toLowerCase();
+  return text.includes('comment') || text.includes('คอมเม้น');
+}
+
 function openOrderModal(service) {
   document.getElementById('orderServiceId').value = service.service;
   document.getElementById('orderServiceName').value = service.name;
@@ -206,6 +216,18 @@ function openOrderModal(service) {
   document.getElementById('orderQuantity').max = service.max || '';
   document.getElementById('orderQuantityHint').textContent = `Min: ${service.min || 1} / Max: ${service.max || '∞'}`;
   document.getElementById('orderMessage').classList.add('hidden');
+
+  const commentsGroup = document.getElementById('orderCommentsGroup');
+  const commentsInput = document.getElementById('orderComments');
+  if (isCommentService(service)) {
+    commentsGroup.classList.remove('hidden');
+    commentsInput.required = true;
+  } else {
+    commentsGroup.classList.add('hidden');
+    commentsInput.required = false;
+  }
+  commentsInput.value = '';
+
   document.getElementById('orderModal').classList.remove('hidden');
   document.getElementById('orderLink').focus();
 }
@@ -215,11 +237,13 @@ async function handleOrderSubmit(e) {
   const msgEl = document.getElementById('orderMessage');
   const submitBtn = e.target.querySelector('button[type="submit"]');
 
+  const comments = document.getElementById('orderComments').value.trim();
   const body = {
     serviceId: document.getElementById('orderServiceId').value,
     serviceName: document.getElementById('orderServiceName').value,
     link: document.getElementById('orderLink').value,
     quantity: document.getElementById('orderQuantity').value,
+    ...(comments && { comments }),
   };
 
   submitBtn.disabled = true;

@@ -7,7 +7,7 @@ const router = Router();
 
 // Place new order
 router.post('/api/orders', requireAuth, async (req, res) => {
-  const { serviceId, serviceName, link, quantity } = req.body || {};
+  const { serviceId, serviceName, link, quantity, comments } = req.body || {};
 
   if (!serviceId || !link || !quantity) {
     return res.status(400).json({ error: 'serviceId, link, and quantity are required' });
@@ -25,7 +25,7 @@ router.post('/api/orders', requireAuth, async (req, res) => {
   }
 
   try {
-    const result = await addOrder({ serviceId, link, quantity: qty });
+    const result = await addOrder({ serviceId, link, quantity: qty, comments: comments || undefined });
 
     const row = db.prepare(`
       INSERT INTO orders (user_id, ads4u_order_id, service_id, service_name, link, quantity, charge)

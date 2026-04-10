@@ -53,6 +53,9 @@
     "link": "ลิงก์ URL",
     "link_placeholder": "https://instagram.com/username",
     "quantity": "จำนวน",
+    "comments": "คอมเม้นท์",
+    "comments_placeholder": "ใส่คอมเม้นท์ บรรทัดละ 1 ข้อความ",
+    "comments_hint": "ใส่คอมเม้นท์ที่ต้องการ บรรทัดละ 1 ข้อความ",
     "submit": "ยืนยันสั่งซื้อ",
     "success": "สั่งซื้อสำเร็จ!",
     "error": "เกิดข้อผิดพลาด"

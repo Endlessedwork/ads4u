@@ -53,6 +53,9 @@
     "link": "Link URL",
     "link_placeholder": "https://instagram.com/username",
     "quantity": "Quantity",
+    "comments": "Comments",
+    "comments_placeholder": "Enter comments, one per line",
+    "comments_hint": "Enter your comments, one per line",
     "submit": "Place Order",
     "success": "Order placed successfully!",
     "error": "An error occurred"

@@ -37,12 +37,16 @@ export async function getServices() {
   return callApi('services');
 }
 
-export async function addOrder({ serviceId, link, quantity }) {
-  return callApi('add', {
+export async function addOrder({ serviceId, link, quantity, comments }) {
+  const params = {
     service: String(serviceId),
     link,
     quantity: String(quantity),
-  });
+  };
+  if (comments) {
+    params.comments = comments;
+  }
+  return callApi('add', params);
 }
 
 export async function getOrderStatus(orderId) {
